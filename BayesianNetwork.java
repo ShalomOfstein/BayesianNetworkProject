@@ -1,4 +1,5 @@
-import java.util.ArrayList;
+
+import java.util.HashMap;
 
 /**
  * BayesianNetwork.java
@@ -7,24 +8,31 @@ import java.util.ArrayList;
  */
 
 public class BayesianNetwork {
-    public ArrayList<Variable> variables;
+    public HashMap<String, Variable> variables;
 
     public BayesianNetwork() {
-        variables = new ArrayList<Variable>();
+        variables = new HashMap<String, Variable>();
+    }
+
+    public HashMap<String, Variable> getVariables() {
+        return variables;
     }
 
     public void addVariable(Variable v) {
-        variables.add(v);
+        variables.put(v.getName(), v);
     }
 
     public Variable getVariable(String name) {
-        for (Variable v : variables) {
-            if (v.name.equals(name)) {
-                return v;
-            }
+        if (variables.containsKey(name)) {
+            return variables.get(name);
         }
-        return null;
+        throw new RuntimeException("Variable not found: " + name);
     }
+
+    public boolean hasVariable(String name) {
+        return variables.containsKey(name);
+    }
+
 
 
 }

@@ -6,11 +6,11 @@ import java.util.ArrayList;
  */
 
 public class Variable {
-    public String name;
-    public ArrayList<Variable> parents;
-    public ArrayList<Variable> children;
-    public String[] outcomes;
-    public double[] probabilities;
+    private String name;
+    private ArrayList<Variable> parents;
+    private ArrayList<Variable> children;
+    private String[] outcomes;
+    private double[] probabilities;
 
     public Variable(String name) {
         this.name = name;
@@ -19,6 +19,23 @@ public class Variable {
         outcomes = null;
         probabilities = null;
     }
+
+    public String getName() {
+        return name;
+    }
+    public ArrayList<Variable> getParents() {
+        return parents;
+    }
+    public ArrayList<Variable> getChildren() {
+        return children;
+    }
+    public String[] getOutcomes() {
+        return outcomes;
+    }
+    public double[] getProbabilities() {
+        return probabilities;
+    }
+
 
     public void setOutcomes(String[] outcomes) {
         this.outcomes = outcomes;
@@ -37,9 +54,8 @@ public class Variable {
         v.children.remove(this);
     }
     public double getProbability(String[] parentOutcomes) {
-        int index = 0;
-
-        return probabilities[index];
+        return 0.0;
+        // TODO: Implement this method
     }
 
 
