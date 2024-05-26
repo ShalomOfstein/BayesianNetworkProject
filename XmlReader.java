@@ -79,15 +79,23 @@ public class XmlReader {
                     for (int i = 0; i < probString.length; i++) {
                         probabilities[i] = Double.parseDouble(probString[i]);
                     }
+                    CPT cpt = new CPT(probabilities);
 
                     // Find the variable in the list of variables
-                    Variable v = variables.get(VarName);
+                    Variable v = null;
+                    if(variables.containsKey(VarName)){
+                        v = variables.get(VarName);
+                    }else{
+                        System.out.println("Variable not found: " + VarName);
+
+                    }
                     // Add the parents to the variable
                     for (String parent : parents) {
                         v.addParent(variables.get(parent));
                     }
                     // Set the probabilities for the variable
-                    v.setProbabilities(probabilities);
+
+                    v.setProbabilities(cpt);
 
 
                 }

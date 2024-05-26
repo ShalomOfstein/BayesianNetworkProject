@@ -10,14 +10,16 @@ public class Variable {
     private ArrayList<Variable> parents;
     private ArrayList<Variable> children;
     private String[] outcomes;
-    private double[] probabilities;
+    private CPT probabilities;
+    boolean isEvidence = false;
+    int observed = 0;
 
     public Variable(String name) {
         this.name = name;
         parents = new ArrayList<Variable>();
         children = new ArrayList<Variable>();
         outcomes = null;
-        probabilities = null;
+        probabilities = new CPT();
     }
 
     public String getName() {
@@ -32,16 +34,16 @@ public class Variable {
     public String[] getOutcomes() {
         return outcomes;
     }
-    public double[] getProbabilities() {
+    public CPT getProbabilities() {
         return probabilities;
     }
 
 
+
     public void setOutcomes(String[] outcomes) {
         this.outcomes = outcomes;
-        probabilities = new double[outcomes.length];
     }
-    public void setProbabilities(double[] probabilities) {
+    public void setProbabilities(CPT probabilities) {
         this.probabilities = probabilities;
     }
 
@@ -49,13 +51,26 @@ public class Variable {
         parents.add(v);
         v.children.add(this);
     }
+
+    public void setEvidence(boolean isEvidence) {
+        this.isEvidence = isEvidence;
+    }
+    public boolean isEvidence() {
+        return isEvidence;
+    }
+    public void setObserved(int observed) {
+        this.observed = observed;
+    }
+    public int Observed() {
+        return observed;
+    }
+
     public void removeParent(Variable v) {
         parents.remove(v);
         v.children.remove(this);
     }
     public double getProbability(String[] parentOutcomes) {
-        return 0.0;
-        // TODO: Implement this method
+        return probabilities.getProbability(parentOutcomes);
     }
 
 
