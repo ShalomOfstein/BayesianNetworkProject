@@ -26,8 +26,9 @@ public class XmlReader {
 
                     // Get the name of the variable
                     String VarName = variable.getElementsByTagName("NAME").item(0).getTextContent();
+
                     // Get the list of outcomes for the variable
-                    NodeList OutList = doc.getElementsByTagName("OUTCOME");
+                    NodeList OutList = variable.getElementsByTagName("OUTCOME");
                     String[] outcomes = new String[OutList.getLength()];
                     for (int i = 0; i < OutList.getLength(); i++) {
                         outcomes[i] = OutList.item(i).getTextContent();

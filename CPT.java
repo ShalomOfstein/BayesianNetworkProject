@@ -6,13 +6,14 @@ import java.util.*;
  */
 
 public class CPT {
-    Map<Set<String>,Double> table;
+    Map<List<String>,Double> table;
     Variable v;
 
     public CPT(Variable v, ArrayList<Variable> parents, double[] probabilities) {
         this.v = v;
-        table = new HashMap<Set<String>,Double>();
+        table = new HashMap<List<String>,Double>();
         setCPTable(parents, probabilities);
+        printCPT();
     }
 
     /**
@@ -27,12 +28,14 @@ public class CPT {
         List<List<String>> outcomesList = new ArrayList<>();
 
         // creating the 2D list of outcomes per parent
-        for (Variable parent : parents) {
-            List<String> outcomes = new ArrayList<>();
-            for (String outcome : parent.getOutcomes()) {
-                outcomes.add(parent.getName() + "=" + outcome);
+        if(parents.size() != 0) {
+            for (Variable parent : parents) {
+                List<String> outcomes = new ArrayList<>();
+                for (String outcome : parent.getOutcomes()) {
+                    outcomes.add(parent.getName() + "=" + outcome);
+                }
+                outcomesList.add(outcomes);
             }
-            outcomesList.add(outcomes);
         }
         // Add the outcomes of the variable itself
         List<String> varOutcomes = new ArrayList<>();
@@ -42,7 +45,9 @@ public class CPT {
         outcomesList.add(varOutcomes);
 
         // Generate all combinations of outcomes
-        List<Set<String>> allCombinations = generateAllCombinations(outcomesList);
+        List<List<String>> allCombinations = generateAllCombinations(outcomesList);
+
+
 
         // Map combinations to probabilities
         for (int i = 0; i < allCombinations.size(); i++) {
@@ -55,9 +60,9 @@ public class CPT {
      * @param outcomesList list of outcomes for each parent and the variable itself
      * @return list of all combinations of outcomes in the order to be mapped to probabilities
      */
-    private List<Set<String>> generateAllCombinations(List<List<String>> outcomesList) {
-        List<Set<String>> allCombinations = new ArrayList<>();
-        generateAllCombinationsHelper(outcomesList, allCombinations, 0, new HashSet<String>());
+    private List<List<String>> generateAllCombinations(List<List<String>> outcomesList) {
+        List<List<String>> allCombinations = new ArrayList<>();
+        generateAllCombinationsHelper(outcomesList, allCombinations, 0, new ArrayList<String>());
         return allCombinations;
     }
     /**
@@ -67,9 +72,9 @@ public class CPT {
      * @param index index of the parent in the list of outcomes
      * @param current current set of outcomes
      */
-    private void generateAllCombinationsHelper(List<List<String>> outcomesList, List<Set<String>> allCombinations, int index, Set<String> current) {
+    private void generateAllCombinationsHelper(List<List<String>> outcomesList, List<List<String>> allCombinations, int index, List<String> current) {
         if (index == outcomesList.size()) {
-            allCombinations.add(new HashSet<>(current));
+            allCombinations.add(new ArrayList<>(current));
             return;
         }
         for (String outcome : outcomesList.get(index)) {
@@ -88,6 +93,13 @@ public class CPT {
     public double getProbability(String[] parentOutcomes) {
         Set<String> outcomeSet = new HashSet<>(Arrays.asList(parentOutcomes));
         return table.getOrDefault(outcomeSet, 0.0);
+    }
+
+    public void printCPT() {
+        System.out.println("CPT for " + v.getName());
+        for (Map.Entry<List<String>, Double> entry : table.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
     }
 
 
