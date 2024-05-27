@@ -10,7 +10,7 @@ public class Variable {
     private ArrayList<Variable> parents;
     private ArrayList<Variable> children;
     private String[] outcomes;
-    private CPT probabilities;
+    private CPT CPT;
     boolean isEvidence = false;
     int observed = 0;
 
@@ -19,7 +19,7 @@ public class Variable {
         parents = new ArrayList<Variable>();
         children = new ArrayList<Variable>();
         outcomes = null;
-        probabilities = new CPT();
+        CPT = null;
     }
 
     public String getName() {
@@ -34,8 +34,8 @@ public class Variable {
     public String[] getOutcomes() {
         return outcomes;
     }
-    public CPT getProbabilities() {
-        return probabilities;
+    public CPT getProbabilityTable() {
+        return CPT;
     }
 
 
@@ -44,7 +44,7 @@ public class Variable {
         this.outcomes = outcomes;
     }
     public void setProbabilities(CPT probabilities) {
-        this.probabilities = probabilities;
+        this.CPT = probabilities;
     }
 
     public void addParent(Variable v) {
@@ -70,7 +70,7 @@ public class Variable {
         v.children.remove(this);
     }
     public double getProbability(String[] parentOutcomes) {
-        return probabilities.getProbability(parentOutcomes);
+        return CPT.getProbability(parentOutcomes);
     }
 
 

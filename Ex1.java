@@ -1,7 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.util.HashMap;
-import java.util.Map;
+//TODO: account for damaged inputs and bad networks
 
 public class Ex1 {
     static boolean DEBUG = true;
@@ -13,7 +12,7 @@ public class Ex1 {
         }
         if(DEBUG) {
             args = new String[1];
-            args[0] = "input.txt";
+            args[0] = "input1.txt";
         }
 
         String inputFile = args[0];
@@ -46,17 +45,11 @@ public class Ex1 {
 
     public static void processVariableEliminationQuery(BayesianNetwork bn, String query) {
         System.out.println("Variable Elimination Query: " + query);
-//        String[] parts = query.split("\\|");
-//        String[] variables = parts[0].substring(2, parts[0].length() - 1).split(",");
-//        String evidence = parts.length > 1 ? parts[1] : "";
-//        String[] given = evidence.split(",");
-//        Map<String, String> evidence = parseEvidence(given);
-//
-//        String queryVariable = variables[0];
-//        String[] hiddenVariables = Arrays.copyOfRange(variables, 1, variables.length);
-//
-//        double probability = bn.variableElimination(queryVariable, hiddenVariables, evidence);
-//        System.out.println(probability);
+        String[] parts = query.split("\\|");
+        String[] variables = parts[0].substring(2, parts[0].length() - 1).split(",");
+        String evidence = parts.length > 1 ? parts[1] : "";
+        String[] given = evidence.split(",");
+
 
     }
 }

@@ -1,8 +1,7 @@
 import org.w3c.dom.*;
 import javax.xml.parsers.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class XmlReader {
     public static ArrayList<Variable> readVariables(String filename) {
@@ -46,7 +45,8 @@ public class XmlReader {
         return variables;
     }
 
-    public static void defineVariables(HashMap<String,Variable> variables, String filename) {
+    public static void defineVariables(BayesianNetwork bn, String filename) {
+        HashMap<String,Variable> variables = bn.getVariables();
         try {
             // Create a new DocumentBuilderFactory and read the XML file
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -64,12 +64,17 @@ public class XmlReader {
 
                     // Get the name of the variable
                     String VarName = relationship.getElementsByTagName("FOR").item(0).getTextContent();
+
                     // Get the list of parents for the variable
                     NodeList ParList = relationship.getElementsByTagName("GIVEN");
-                    String[] parents = new String[ParList.getLength()];
-                    for (int i = 0; i < ParList.getLength(); i++) {
-                        parents[i] = ParList.item(i).getTextContent();
+                    int numOfParents = ParList.getLength();
+                    ArrayList<Variable> parentsList = new ArrayList<Variable>();
+
+                    for (int i = 0; i < numOfParents; i++) {
+                        String parent = ParList.item(i).getTextContent();
+                        parentsList.add(variables.get(parent));
                     }
+
                     // Get the list of probabilities for the variable
                     String ProbList = relationship.getElementsByTagName("TABLE").item(0).getTextContent();
                     String[] probString = ProbList.split(" ");
@@ -79,23 +84,21 @@ public class XmlReader {
                     for (int i = 0; i < probString.length; i++) {
                         probabilities[i] = Double.parseDouble(probString[i]);
                     }
-                    CPT cpt = new CPT(probabilities);
 
                     // Find the variable in the list of variables
                     Variable v = null;
-                    if(variables.containsKey(VarName)){
-                        v = variables.get(VarName);
-                    }else{
-                        System.out.println("Variable not found: " + VarName);
 
-                    }
+                    v = variables.get(VarName);
+
+                    // Create a new CPT object
+                    CPT cptObject = new CPT( v, parentsList, probabilities );
+
                     // Add the parents to the variable
-                    for (String parent : parents) {
-                        v.addParent(variables.get(parent));
+                    for (Variable parent : parentsList) {
+                        v.addParent(variables.get(parent.getName()));
                     }
                     // Set the probabilities for the variable
-
-                    v.setProbabilities(cpt);
+                    v.setProbabilities(cptObject);
 
 
                 }
@@ -103,8 +106,11 @@ public class XmlReader {
         }catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
+
+
+
 
     public static void createBayesianNetwork(BayesianNetwork bn, String filename) {
         // Read the list of variables from the XML file
@@ -114,7 +120,7 @@ public class XmlReader {
             bn.addVariable(v);
         }
         // Define the relationships between the variables
-        XmlReader.defineVariables(bn.getVariables(), filename);
+        XmlReader.defineVariables(bn, filename);
     }
 
 }
