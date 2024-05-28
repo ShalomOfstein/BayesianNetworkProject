@@ -6,8 +6,8 @@ import java.util.*;
  */
 
 public class CPT {
-    Map<List<String>,Double> table;
-    Variable v;
+    private Map<List<String>,Double> table;
+    private Variable v;
 
     public CPT(Variable v, ArrayList<Variable> parents, double[] probabilities) {
         this.v = v;
@@ -93,6 +93,9 @@ public class CPT {
     public double getProbability(String[] parentOutcomes) {
         Set<String> outcomeSet = new HashSet<>(Arrays.asList(parentOutcomes));
         return table.getOrDefault(outcomeSet, 0.0);
+    }
+    public Map<List<String>, Double> getTable() {
+        return table;
     }
 
     public void printCPT() {
