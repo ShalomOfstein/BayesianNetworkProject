@@ -42,7 +42,7 @@ public class BayesBall {
      * @param evidence a hash map of the evidence variables name (String) and their values (String)
      * @return
      */
-    private static boolean areIndependent(BayesianNetwork network, String var1, String var2, HashMap<String, String> evidence) {
+    public static boolean areIndependent(BayesianNetwork network, String var1, String var2, HashMap<String, String> evidence) {
 
         // get the variable objects
         Variable v1 = network.getVariable(var1);
@@ -139,7 +139,7 @@ public class BayesBall {
 
 
 
-    private static HashMap<String, String> parseEvidence(String given) {
+    public static HashMap<String, String> parseEvidence(String given) {
         HashMap<String, String> evidence = new HashMap<>();
         if (!given.isEmpty()) {
             String[] evidenceParts = given.split(",");

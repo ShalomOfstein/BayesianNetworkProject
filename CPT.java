@@ -31,6 +31,9 @@ public class CPT {
         if(!parents.isEmpty()) {
             for (Variable parent : parents) {
                 List<String> outcomes = new ArrayList<>();
+                if (parent == null) {
+                    System.out.println("Variable: " + v.getName() + " has a parent that is null.");
+                }
                 for (String outcome : parent.getOutcomes()) {
                     outcomes.add(parent.getName() + "=" + outcome);
                 }
