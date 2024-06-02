@@ -1,14 +1,15 @@
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * VariableElimination.java
+ * This class implements the Variable Elimination algorithm for a Bayesian Network
+ * */
+
+
 public class VariableElimination {
-    public static void computeProbability(BayesianNetwork bn, String query){
-        // Implement the quarry parsing
 
-
-
-
-        // Implement the variable elimination algorithm
-        
-
-    }
-
+    public static int NumOfAdditions;
+    public static int NumOfMultiplications;
 
 }

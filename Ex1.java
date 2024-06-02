@@ -12,7 +12,7 @@ public class Ex1 {
         }
         if(DEBUG) {
             args = new String[1];
-            args[0] = "input2.txt";
+            args[0] = "input.txt";
         }
 
         String inputFile = args[0];
@@ -32,7 +32,8 @@ public class Ex1 {
                 line = line.trim();
                 if (line.isEmpty()) continue;
                 if (line.startsWith("P(")) {
-                    processVariableEliminationQuery(bn, line);
+                    VariableElimination.processVariableEliminationQuery(bn, line);
+
                 }else {
                     boolean ans = BayesBall.processBayesBallQuery(bn, line);
                     System.out.println(ans?"yes":"no");
@@ -41,15 +42,5 @@ public class Ex1 {
         }catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public static void processVariableEliminationQuery(BayesianNetwork bn, String query) {
-        System.out.println("Variable Elimination Query: " + query);
-        String[] parts = query.split("\\|");
-        String[] variables = parts[0].substring(2, parts[0].length() - 1).split(",");
-        String evidence = parts.length > 1 ? parts[1] : "";
-        String[] given = evidence.split(",");
-
-
     }
 }

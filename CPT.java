@@ -13,7 +13,7 @@ public class CPT {
         this.v = v;
         table = new HashMap<List<String>,Double>();
         setCPTable(parents, probabilities);
-        printCPT();
+//        printCPT();
     }
 
     /**
@@ -28,7 +28,7 @@ public class CPT {
         List<List<String>> outcomesList = new ArrayList<>();
 
         // creating the 2D list of outcomes per parent
-        if(parents.size() != 0) {
+        if(!parents.isEmpty()) {
             for (Variable parent : parents) {
                 List<String> outcomes = new ArrayList<>();
                 for (String outcome : parent.getOutcomes()) {
