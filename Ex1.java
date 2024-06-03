@@ -12,7 +12,7 @@ public class Ex1 {
         }
         if(DEBUG) {
             args = new String[1];
-            args[0] = "input1.txt";
+            args[0] = "input.txt";
         }
 
         String inputFile = args[0];

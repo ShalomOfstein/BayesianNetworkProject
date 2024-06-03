@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Variable class
@@ -9,7 +10,7 @@ public class Variable {
     private String name;
     private ArrayList<Variable> parents;
     private ArrayList<Variable> children;
-    private String[] outcomes;
+    private List<String> outcomes;
     private CPT CPT;
     boolean isEvidence = false;
     int observed = 0;
@@ -31,7 +32,7 @@ public class Variable {
     public ArrayList<Variable> getChildren() {
         return children;
     }
-    public String[] getOutcomes() {
+    public List<String> getOutcomes() {
         return outcomes;
     }
     public CPT getProbabilityTable() {
@@ -40,7 +41,7 @@ public class Variable {
 
 
 
-    public void setOutcomes(String[] outcomes) {
+    public void setOutcomes(List<String> outcomes) {
         this.outcomes = outcomes;
     }
     public void setProbabilities(CPT probabilities) {

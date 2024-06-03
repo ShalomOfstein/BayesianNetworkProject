@@ -63,7 +63,7 @@ public class CPT {
      * @param outcomesList list of outcomes for each parent and the variable itself
      * @return list of all combinations of outcomes in the order to be mapped to probabilities
      */
-    private List<List<String>> generateAllCombinations(List<List<String>> outcomesList) {
+    public static List<List<String>> generateAllCombinations(List<List<String>> outcomesList) {
         List<List<String>> allCombinations = new ArrayList<>();
         generateAllCombinationsHelper(outcomesList, allCombinations, 0, new ArrayList<String>());
         return allCombinations;
@@ -75,7 +75,7 @@ public class CPT {
      * @param index index of the parent in the list of outcomes
      * @param current current set of outcomes
      */
-    private void generateAllCombinationsHelper(List<List<String>> outcomesList, List<List<String>> allCombinations, int index, List<String> current) {
+    private static void generateAllCombinationsHelper(List<List<String>> outcomesList, List<List<String>> allCombinations, int index, List<String> current) {
         if (index == outcomesList.size()) {
             allCombinations.add(new ArrayList<>(current));
             return;

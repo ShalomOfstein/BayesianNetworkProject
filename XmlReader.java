@@ -29,9 +29,9 @@ public class XmlReader {
 
                     // Get the list of outcomes for the variable
                     NodeList OutList = variable.getElementsByTagName("OUTCOME");
-                    String[] outcomes = new String[OutList.getLength()];
+                    ArrayList<String> outcomes = new ArrayList<>();
                     for (int i = 0; i < OutList.getLength(); i++) {
-                        outcomes[i] = OutList.item(i).getTextContent();
+                        outcomes.add(OutList.item(i).getTextContent());
                     }
                     // Create a new Variable object and add it to the list of variables
                     Variable v = new Variable(VarName);
