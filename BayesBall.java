@@ -53,6 +53,7 @@ public class BayesBall {
 
         // Perform DFS to check reachability
         boolean search = search(v1, v2, null);
+        resetEvidence(network);
         return !search;
     }
 
@@ -96,12 +97,27 @@ public class BayesBall {
         // mark the variable as observed
         current.setObserved(current.Observed()+1);
 
+        // if this is the first variable we are visiting, we can go to any parent or child
+        if(comingFrom==null){
+            for (Variable parent : current.getParents()) {
+                if (search(parent, end, current)) {
+                    return true;
+                }
+            }
+            for (Variable child : current.getChildren()) {
+                if (search(child, end, current)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         // Breakdown into 4 cases:
         //
         // if current is NOT evidence
         if (!current.isEvidence()) {
             // Case 1:  if we came from a parent (current is NOT evidence)
-            if(current.getParents().contains(comingFrom)||comingFrom==null) {
+            if(current.getParents().contains(comingFrom)) {
                 for (Variable child : current.getChildren()) {
                     if (search(child, end, current)) {
                         return true;
@@ -121,7 +137,7 @@ public class BayesBall {
                 }
             }
         } else { // if X is evidence
-            if(current.getParents().contains(comingFrom)||comingFrom==null) { // if we came from a parent
+            if(current.getParents().contains(comingFrom)) { // if we came from a parent
                 for (Variable parent : current.getParents()) {
                     if (search(parent, end, current)) {
                         return true;

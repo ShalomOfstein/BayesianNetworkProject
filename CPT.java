@@ -6,8 +6,8 @@ import java.util.*;
  */
 
 public class CPT {
-    private Map<List<String>,Double> table;
-    private Variable v;
+    private final Map<List<String>,Double> table;
+    private final Variable v;
 
     public CPT(Variable v, ArrayList<Variable> parents, double[] probabilities) {
         this.v = v;
@@ -40,6 +40,7 @@ public class CPT {
                 outcomesList.add(outcomes);
             }
         }
+
         // Add the outcomes of the variable itself
         List<String> varOutcomes = new ArrayList<>();
         for (String outcome : v.getOutcomes()) {
@@ -49,7 +50,6 @@ public class CPT {
 
         // Generate all combinations of outcomes
         List<List<String>> allCombinations = generateAllCombinations(outcomesList);
-
 
 
         // Map combinations to probabilities
@@ -94,7 +94,7 @@ public class CPT {
      */
 
     public double getProbability(String[] parentOutcomes) {
-        Set<String> outcomeSet = new HashSet<>(Arrays.asList(parentOutcomes));
+        Set<String> outcomeSet = new HashSet<String>(Arrays.asList(parentOutcomes));
         return table.getOrDefault(outcomeSet, 0.0);
     }
     public Map<List<String>, Double> getTable() {
