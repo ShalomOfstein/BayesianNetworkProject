@@ -75,35 +75,23 @@ public class VariableElimination {
             System.out.println(Math.round(ans*100000.0)/100000.0);
         }
 
+
         // eliminate the hidden variables
 
         for (Variable h : hiddenVars) {
-//            System.out.println();
-//            System.out.println("number of factors: "+factors.size());
-//            for(Factor f : factors){
-//                f.printFactor();
-//            }
             factors = eliminateVariable(factors, h);
         }
-        while(factors.size() > 1) {
-            Factor f1 = factors.removeFirst();
-            Factor f2 = factors.removeFirst();
-            Factor result = f1.join(f2, queryVar);
-            result.normalize();
-            insert(factors,result);
+
+        Factor lastFactor = multiplyFactors(factors, queryVar);
+        if(lastFactor!=null) {
+            lastFactor.normalize();
+            NumOfAdditions += lastFactor.getTable().size()-1;
         }
-//        System.out.println();
-//        System.out.println("--> number of factors: "+factors.size());
-//        for(Factor f : factors){
-//            f.printFactor();
-//        }
+
+        double ans = factors.getFirst().getProbability(queryVarString);
+        System.out.println((Math.round(ans*100000.0)/100000.0) + "," + NumOfAdditions + "," + NumOfMultiplications);
 
 
-        if(factors.size()==1){
-            double ans = factors.getFirst().getProbability(queryVarString);
-            System.out.println(Math.round(ans*100000.0)/100000.0);
-            return;
-        }
 
     }
 
@@ -121,11 +109,17 @@ public class VariableElimination {
                 varsToRemove.add(v);
             }
         }
-        for(Variable v : vars) {
-            for(int i= 0 ; i< varsToRemove.size(); i++) {
-                if(v.getParents().contains(varsToRemove.get(i))) {
-                    varsToRemove.add(v);
+        for(String EvidenceVar : evidence.keySet()) {
+            Variable v = bn.getVariable(EvidenceVar);
+            boolean remove = true;
+            for(Variable parent : v.getParents()) {
+                if(!varsToRemove.contains(parent)) {
+                    remove = false;
+                    break;
                 }
+            }
+            if(remove) {
+                varsToRemove.add(v);
             }
         }
         for (Variable v : varsToRemove) {
@@ -180,7 +174,11 @@ public class VariableElimination {
             }
         }
         Factor newFactor = multiplyFactors(toMultiply , hidden);
-        if(newFactor != null) newFactor = newFactor.EliminateVariable(hidden);
+        if(newFactor != null) {
+            int size = newFactor.getTable().size();
+            newFactor = newFactor.EliminateVariable(hidden);
+            NumOfAdditions+= (size -newFactor.getTable().size());
+        }
         if(newFactor != null && newFactor.getTable().size() > 1) newFactors.add(newFactor);
 
         return newFactors;
@@ -204,7 +202,7 @@ public class VariableElimination {
             Factor f2 = factors.removeFirst();
             result = f1.join(f2, hidden);
             insert(factors,result);
-
+            NumOfMultiplications += result.getTable().size();
         }
         return result;
     }

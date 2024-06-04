@@ -1,46 +1,60 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 //TODO: account for damaged inputs and bad networks
 
 public class Ex1 {
-    static boolean DEBUG = true;
+    static boolean DEBUG = false;
 
     public static void main(String[] args) {
-        if (!DEBUG && args.length < 1) {
-            System.out.println("Usage: java BayesianNetworkMain <inputfile.txt>");
-            return;
-        }
-        if(DEBUG) {
-            args = new String[1];
-            args[0] = "input.txt";
+        String inputFile = "input.txt";
+        String outputFile = "output.txt";
+
+        if(args.length==2){
+            inputFile = args[0];
+            outputFile = args[1];
         }
 
-        String inputFile = args[0];
+        if(DEBUG ){
+            inputFile = "input.txt";
+            outputFile = "outputs/Actual/outputFile.txt";
+        }
+
+
+
         BayesianNetwork bn = new BayesianNetwork();
 
-        // Read the XML file and create the Bayesian Network
-        try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
-            String line = br.readLine();
-            if (line != null) {
-                // First line: create the Bayesian Network
-                String xmlFilename = line.trim();
-                XmlReader.createBayesianNetwork(bn, xmlFilename);
-            }
+        PrintStream originalOut = System.out;
+        try (PrintStream out = new PrintStream(new FileOutputStream(outputFile))) {
+            System.setOut(out);
 
-            // Second line: query the Bayesian Network
-            while ((line = br.readLine()) != null) {
-                line = line.trim();
-                if (line.isEmpty()) continue;
-                if (line.startsWith("P(")) {
-                    VariableElimination.processVariableEliminationQuery(bn, line);
-
-                }else {
-                    boolean ans = BayesBall.processBayesBallQuery(bn, line);
-                    System.out.println(ans?"yes":"no");
+            // Read the XML file and create the Bayesian Network
+            try (BufferedReader br = new BufferedReader(new FileReader(inputFile))) {
+                String line = br.readLine();
+                if (line != null) {
+                    // First line: create the Bayesian Network
+                    String xmlFilename = line.trim();
+                    XmlReader.createBayesianNetwork(bn, xmlFilename);
                 }
+
+                // Second line: query the Bayesian Network
+                while ((line = br.readLine()) != null) {
+                    line = line.trim();
+                    if (line.isEmpty()) continue;
+                    if (line.startsWith("P(")) {
+                        VariableElimination.processVariableEliminationQuery(bn, line);
+
+                    } else {
+                        boolean ans = BayesBall.processBayesBallQuery(bn, line);
+                        System.out.println(ans ? "yes" : "no");
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        }catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            // Restore the original System.out
+            System.setOut(originalOut);
         }
     }
 }

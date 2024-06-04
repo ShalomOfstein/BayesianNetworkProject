@@ -76,30 +76,34 @@ public class XmlReader {
                         parentsList.add(variables.get(parent));
                     }
 
-                    // Get the list of probabilities for the variable
-                    String ProbList = relationship.getElementsByTagName("TABLE").item(0).getTextContent();
-                    String[] probString = ProbList.split(" ");
-
-                    //change the probabilities to double
-                    double[] probabilities = new double[probString.length];
-                    for (int i = 0; i < probString.length; i++) {
-                        probabilities[i] = Double.parseDouble(probString[i]);
-                    }
-
                     // Find the variable in the list of variables
                     Variable v = null;
 
                     v = variables.get(VarName);
-
-                    // Create a new CPT object
-                    CPT cptObject = new CPT( v, parentsList, probabilities );
-
                     // Add the parents to the variable
                     for (Variable parent : parentsList) {
                         v.addParent(variables.get(parent.getName()));
                     }
-                    // Set the probabilities for the variable
-                    v.setProbabilities(cptObject);
+
+                    // Get the list of probabilities for the variable
+                    NodeList list = relationship.getElementsByTagName("TABLE");
+
+                    if(list.getLength() > 0){
+                        String ProbList = list.item(0).getTextContent();
+                        String[] probString = ProbList.split(" ");
+
+                        //change the probabilities to double
+                        double[] probabilities = new double[probString.length];
+                        for (int i = 0; i < probString.length; i++) {
+                            probabilities[i] = Double.parseDouble(probString[i]);
+                        }
+
+                        // Create a new CPT object
+                        CPT cptObject = new CPT( v, parentsList, probabilities );
+
+                        // Set the probabilities for the variable
+                        v.setProbabilities(cptObject);
+                    }
 
 
                 }
