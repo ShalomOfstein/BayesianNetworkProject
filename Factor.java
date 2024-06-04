@@ -191,8 +191,21 @@ public class Factor implements Comparable<Factor>{
                 }
             }
         }
-
         return new Factor(newVars, newTable);
+    }
+
+    public Factor normalize() {
+        double sum = 0;
+        for(Double d : table.values()) {
+            sum += d;
+        }
+        Map<Set<String>,Double> newTable = new HashMap<Set<String>,Double>();
+        for(Set<String> key : table.keySet()) {
+            newTable.put(key, table.get(key)/sum);
+        }
+        Set<Variable> vars = new HashSet<Variable>(variables.values());
+        this.table = newTable;
+        return new Factor(vars, newTable);
     }
 
     @Override

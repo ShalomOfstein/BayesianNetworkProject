@@ -78,8 +78,27 @@ public class VariableElimination {
         // eliminate the hidden variables
 
         for (Variable h : hiddenVars) {
+//            System.out.println();
+//            System.out.println("number of factors: "+factors.size());
+//            for(Factor f : factors){
+//                f.printFactor();
+//            }
             factors = eliminateVariable(factors, h);
         }
+        while(factors.size() > 1) {
+            Factor f1 = factors.removeFirst();
+            Factor f2 = factors.removeFirst();
+            Factor result = f1.join(f2, queryVar);
+            result.normalize();
+            insert(factors,result);
+        }
+//        System.out.println();
+//        System.out.println("--> number of factors: "+factors.size());
+//        for(Factor f : factors){
+//            f.printFactor();
+//        }
+
+
         if(factors.size()==1){
             double ans = factors.getFirst().getProbability(queryVarString);
             System.out.println(Math.round(ans*100000.0)/100000.0);
@@ -177,7 +196,7 @@ public class VariableElimination {
 
     public static Factor multiplyFactors(List<Factor> factors, Variable hidden) {
         if (factors.isEmpty()) return null;
-
+        factors.sort(Comparator.comparingInt(f -> f.getTable().size()));
         Factor result = factors.getFirst();
 
         while(factors.size() > 1) {
