@@ -48,6 +48,7 @@ public class BayesBall {
         Variable v1 = network.getVariable(var1);
         Variable v2 = network.getVariable(var2);
 
+
         // a set the variables that belong to the evidence as marked
         setEvidenvce(network, evidence);
 
