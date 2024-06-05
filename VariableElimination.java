@@ -81,36 +81,39 @@ public class VariableElimination {
 
 
         // eliminate the hidden variables
-
         for (Variable h : hiddenVars) {
             factors = eliminateVariable(factors, h);
         }
 
-        Factor lastFactor = multiplyFactors(factors, queryVar);
+        // join the remaining factors and normalize the result
+        Factor lastFactor = joinFactors(factors, queryVar);
         if(lastFactor!=null) {
             lastFactor.normalize();
             NumOfAdditions += lastFactor.getTable().size()-1;
         }
 
+        // write the probability of the query variable to the output file
         double ans = factors.get(0).getProbability(queryVarString);
         writer.write((Math.round(ans*100000.0)/100000.0) + "," + NumOfAdditions + "," + NumOfMultiplications);
-
     }
 
 
     /**
-     * This method creates a list of the variables in the network that are independent of the query given the evidence
+     * This method removes the variables that are independent of the query variable given the evidence
      * @param bn the Bayesian Network
      * @param queryVar the query variable
      * @param evidence the evidence variables
      */
     public static void removeIndependentVars(BayesianNetwork bn, Variable queryVar, HashMap<String, String> evidence,List<Variable> vars ) {
+        // Make a list of the variables that are independent of the query variable given the evidence
         ArrayList<Variable> varsToRemove = new ArrayList<>();
         for (Variable v : vars) {
             if (BayesBall.areIndependent(bn, queryVar.getName(), v.getName(), evidence)) {
                 varsToRemove.add(v);
             }
         }
+
+        // For each evidence Variable, if its parents are all in the varsToRemove list, remove it
         for(String EvidenceVar : evidence.keySet()) {
             Variable v = bn.getVariable(EvidenceVar);
             boolean remove = true;
@@ -124,6 +127,8 @@ public class VariableElimination {
                 varsToRemove.add(v);
             }
         }
+
+        // remove the variables that are independent of the query variable given the evidence
         for (Variable v : varsToRemove) {
             vars.remove(v);
         }
@@ -131,28 +136,36 @@ public class VariableElimination {
 
     /**
      * This method creates a list of the ancestors of the query variable and the evidence variables
+     * This method is a recursive method that adds the ancestors of a variable to the list
+     * It uses a version of DFS algorithm to traverse the Bayesian Network
      * @param bn the Bayesian Network
      * @param queryVar the query variable
      * @param evidence the evidence variables
      */
 
     public static void addAncestors(BayesianNetwork bn, Variable queryVar, HashMap<String, String> evidence, List<Variable> vars) {
+        // add the query variable to the list
         if (!vars.contains(queryVar)) {
             vars.add(queryVar);
         }
-        getAncestors(bn, queryVar, vars);
+        // get the ancestors of the query variable
+        getAncestors(queryVar, vars);
+        // get the ancestors of the evidence variables
         for (String e : evidence.keySet()) {
-            getAncestors(bn, bn.getVariable(e), vars);
+            getAncestors(bn.getVariable(e), vars);
         }
     }
 
-    public static void getAncestors(BayesianNetwork bn, Variable v, List<Variable> vars) {
+    public static void getAncestors( Variable v, List<Variable> vars) {
+        // get the parents of the variable
+        // and get the ancestors of the parents
         for (Variable parent : v.getParents()) {
-            getAncestors(bn, parent, vars);
+            getAncestors(parent, vars);
             if (!vars.contains(parent)) {
                 vars.add(parent);
             }
         }
+        // add the variable to the list
         if (!vars.contains(v)) {
             vars.add(v);
         }
@@ -168,6 +181,8 @@ public class VariableElimination {
     public static List<Factor> eliminateVariable(List<Factor> factors, Variable hidden) {
         List<Factor> newFactors = new ArrayList<>();
         List<Factor> toMultiply = new ArrayList<>();
+
+        // separate the factors that contain the hidden variable from the rest
         for (Factor f : factors) {
             if (f.getVariables().contains(hidden)) {
                 toMultiply.add(f);
@@ -175,12 +190,18 @@ public class VariableElimination {
                 newFactors.add(f);
             }
         }
-        Factor newFactor = multiplyFactors(toMultiply , hidden);
+
+        // join the factors that contain the hidden variable
+        Factor newFactor = joinFactors(toMultiply , hidden);
+
+        // eliminate the hidden variable from the new factor
         if(newFactor != null) {
             int sizeOfOld = newFactor.getTable().size();
             newFactor = newFactor.EliminateVariable(hidden);
+            // set the number of additions
             NumOfAdditions+= (sizeOfOld -newFactor.getTable().size());
         }
+        // add the new factor to the list of factors
         if(newFactor != null && newFactor.getTable().size() > 1) newFactors.add(newFactor);
 
         return newFactors;
@@ -188,27 +209,35 @@ public class VariableElimination {
 
 
     /**
-     * This method multiplies a list of factors
+     * This method joins a list of factors
      * @param factors the list of factors
      * @param hidden the hidden variable to eliminate
      * @return the product of the factors
      */
 
-    public static Factor multiplyFactors(List<Factor> factors, Variable hidden) {
+    public static Factor joinFactors(List<Factor> factors, Variable hidden) {
         if (factors.isEmpty()) return null;
-        factors.sort(Comparator.comparingInt(f -> f.getTable().size()));
-        Factor result = factors.get(0);
 
+        // sort the factors by size
+        factors.sort(Comparator.comparingInt(f -> f.getTable().size()));
+        Factor result = factors.get(0); // by default, the result is the first factor (if the list has only one factor)
+
+        // join the factors in pairs
         while(factors.size() > 1) {
             Factor f1 = factors.remove(0);
             Factor f2 = factors.remove(0);
             result = f1.join(f2, hidden);
-            insert(factors,result);
-            NumOfMultiplications += result.getTable().size();
+            insert(factors,result); // insert the new factor in the list of factors according to its size
+            NumOfMultiplications += result.getTable().size(); // set the number of multiplications
         }
         return result;
     }
 
+    /**
+     * This method inserts a factor into a list of factors according to its size
+     * @param factors the list of factors
+     * @param f the factor to insert
+     */
     public static void insert(List<Factor> factors, Factor f) {
         if(factors.isEmpty()) {
             factors.add(f);

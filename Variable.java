@@ -8,8 +8,8 @@ import java.util.List;
 
 public class Variable {
     private final String name;
-    private ArrayList<Variable> parents;
-    private ArrayList<Variable> children;
+    private final ArrayList<Variable> parents;
+    private final ArrayList<Variable> children;
     private List<String> outcomes;
     private CPT CPT;
     boolean isEvidence = false;

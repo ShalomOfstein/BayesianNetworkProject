@@ -97,10 +97,18 @@ public class CPT {
         Set<String> outcomeSet = new HashSet<String>(parentOutcomes);
         return table.getOrDefault(outcomeSet, 0.0);
     }
+
+    /**
+     * Get the conditional probability table in the form of a map <List of outcomes, probability>
+     * @return conditional probability table
+     */
     public Map<List<String>, Double> getTable() {
         return table;
     }
 
+    /**
+     * Print the conditional probability table
+     */
     public void printCPT() {
         System.out.println("CPT for " + v.getName());
         for (Map.Entry<List<String>, Double> entry : table.entrySet()) {

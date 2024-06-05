@@ -3,7 +3,20 @@ import javax.xml.parsers.*;
 import java.io.*;
 import java.util.*;
 
+/**
+ * XmlReader.java
+ * This class reads an XML file and creates a Bayesian Network from it
+ * The XML file contains the list of variables and their relationships
+ *
+ */
 public class XmlReader {
+
+
+    /**
+     * This method reads the list of variables from the XML file
+     * @param filename the name of the XML file
+     * @return the list of variables
+     */
     public static ArrayList<Variable> readVariables(String filename) {
 
         // Create an empty ArrayList of Variables
@@ -46,6 +59,12 @@ public class XmlReader {
         return variables;
     }
 
+    /**
+     * This method defines the relationships between the variables in the Bayesian Network
+     * each variable has a list of parents and a conditional probability table
+     * @param bn the Bayesian Network
+     * @param filename the name of the XML file
+     */
     public static void defineVariables(BayesianNetwork bn, String filename) {
         HashMap<String,Variable> variables = bn.getVariables();
         try {
@@ -114,7 +133,11 @@ public class XmlReader {
     }
 
 
-
+    /**
+     * This method creates a Bayesian Network from an XML file
+     * @param bn the Bayesian Network
+     * @param filename the name of the XML file
+     */
     public static void createBayesianNetwork(BayesianNetwork bn, String filename) {
         // Read the list of variables from the XML file
         ArrayList<Variable> variables = XmlReader.readVariables(filename);

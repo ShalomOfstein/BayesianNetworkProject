@@ -40,7 +40,7 @@ public class BayesBall {
      * @param var1 the first variable name
      * @param var2 the second variable name
      * @param evidence a hash map of the evidence variables name (String) and their values (String)
-     * @return
+     * @return true if the variables are independent, false otherwise
      */
     public static boolean areIndependent(BayesianNetwork network, String var1, String var2, HashMap<String, String> evidence) {
 
@@ -50,7 +50,7 @@ public class BayesBall {
 
 
         // a set the variables that belong to the evidence as marked
-        setEvidenvce(network, evidence);
+        setEvidence(network, evidence);
 
         // Perform DFS to check reachability
         boolean search = search(v1, v2, null);
@@ -147,15 +147,15 @@ public class BayesBall {
             }else { // if we came from a child
                 return false;
             }
-
-
         }
         return false;
     }
 
-
-
-
+    /**
+     * This method parses the evidence string into a hash map
+     * @param given the evidence string
+     * @return a hash map of the evidence variables name (String) and their values (String)
+     */
     public static HashMap<String, String> parseEvidence(String given) {
         HashMap<String, String> evidence = new HashMap<>();
         if (!given.isEmpty()) {
@@ -168,7 +168,12 @@ public class BayesBall {
         return evidence;
     }
 
-    private static void setEvidenvce(BayesianNetwork network, HashMap<String, String> evidence) {
+    /**
+     * This method sets the evidence variables in the network
+     * @param network the Bayesian Network
+     * @param evidence a hash map of the evidence variables name (String) and their values (String)
+     */
+    private static void setEvidence(BayesianNetwork network, HashMap<String, String> evidence) {
         for (Map.Entry<String, String> entry : evidence.entrySet()) {
             String varName = entry.getKey();
             Variable v = network.getVariable(varName);
@@ -176,13 +181,14 @@ public class BayesBall {
         }
     }
 
+    /**
+     * This method resets the variables in the network to not be evidence
+     * @param network the Bayesian Network
+     */
     private static void resetEvidence(BayesianNetwork network) {
         for (Variable v : network.getVariables().values()) {
             v.setEvidence(false);
             v.setObserved(0);
         }
-
     }
-
-
 }

@@ -1,9 +1,25 @@
 import java.util.*;
 
+/**
+ * Factor
+ * This class represents a factor in a Bayesian Network.
+ * A factor is a function that maps an assignment of values to a set of variables to a real number.
+ * The factor is represented as a table that maps a set of values to a real number.
+ * I.E: P(A=a, B=b,...) = x where x<=1 is a real number. and A, B, ... are variables in the network with outcomes a, b, ...
+ */
 public class Factor implements Comparable<Factor>{
+    // the table of the factor is stored as a map of a set of strings to a real number
+    // each set of strings represents an assignment of values to the variables in the factor
     private Map<Set<String>,Double> table;
+    // the variables in the factor
     private Map<String,Variable> variables;
 
+    /**
+     * Constructor - creates a factor from a set of variables and a table
+     * we use this constructor when we oin two factors or eliminate a variable
+     * @param vars the variables in the factor
+     * @param table the table of the factor
+     */
     public Factor(Set<Variable> vars, Map<Set<String>,Double> table) {
         this.variables = new HashMap<String,Variable>();
         for(Variable v : vars){
@@ -11,7 +27,12 @@ public class Factor implements Comparable<Factor>{
         }
         this.table = table;
     }
-
+    /**
+     * Constructor - creates a factor from a variable
+     * we use this constructor when we initially create a factor from a single variable
+     * the table is created from the CPT of the variable
+     * @param v the variable in the factor
+     */
     public Factor(Variable v){
 
         //create a set of variables this factor contains
@@ -71,6 +92,7 @@ public class Factor implements Comparable<Factor>{
 
     /**
      * Eliminate the Evidence Variables from this factor
+     * @param evidence a map of evidence variables and their values
      */
     public void eliminateEvidence(Map<String,String> evidence) {
         if(evidence.isEmpty()) {
@@ -108,8 +130,10 @@ public class Factor implements Comparable<Factor>{
     }
 
     /**
-     * Multiply two factors
-     *
+     * join two factors on a hidden variable
+     * @param f2 the factor to join with
+     * @param hidden the hidden variable to join on
+     * @return the new factor
      */
     public Factor join(Factor f2, Variable hidden){
         List<Variable> varsToJoin = new ArrayList<Variable>();
@@ -150,6 +174,12 @@ public class Factor implements Comparable<Factor>{
         return new Factor(newVars, newTable);
     }
 
+    /**
+     * Check if a set of strings (Key1) contains another set of strings (Key2)
+     * @param key1 the set to check
+     * @param key2 the set to check for
+     * @return true if key1 contains key2, false otherwise
+     */
     private boolean contains(Set<String> key1, Set<String> key2){
         for(String s : key2){
             if(!key1.contains(s)){
@@ -194,7 +224,10 @@ public class Factor implements Comparable<Factor>{
         return new Factor(newVars, newTable);
     }
 
-    public Factor normalize() {
+    /**
+     * Normalize the factor
+     */
+    public void normalize() {
         double sum = 0;
         for(Double d : table.values()) {
             sum += d;
@@ -203,11 +236,14 @@ public class Factor implements Comparable<Factor>{
         for(Set<String> key : table.keySet()) {
             newTable.put(key, table.get(key)/sum);
         }
-        Set<Variable> vars = new HashSet<Variable>(variables.values());
+        // Update the table
         this.table = newTable;
-        return new Factor(vars, newTable);
     }
 
+    /**
+     * Compare two factors
+     * @param f the object to be compared.
+     */
     @Override
     public int compareTo(Factor f) {
         if(this.table.size() > f.getTable().size()) {
