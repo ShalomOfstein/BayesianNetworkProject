@@ -115,8 +115,6 @@ public class XmlReader {
 
 
 
-
-
     public static void createBayesianNetwork(BayesianNetwork bn, String filename) {
         // Read the list of variables from the XML file
         ArrayList<Variable> variables = XmlReader.readVariables(filename);

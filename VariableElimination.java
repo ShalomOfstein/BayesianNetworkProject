@@ -59,7 +59,7 @@ public class VariableElimination {
 
         // add only the relevant variables to the list
         addAncestors(bn, queryVar, evidence, vars);
-        addIndependentVars(bn, queryVar, evidence, vars);
+        removeIndependentVars(bn, queryVar, evidence, vars);
 
 
         // create a list of factors from the variables
@@ -71,10 +71,12 @@ public class VariableElimination {
                 factors.add(f);
             }
         }
-
+        // if there is only one factor, return the probability of the query variable
+        // no need to multiply or sum
         if(factors.size()==1){
-            double ans = factors.getFirst().getProbability(queryVarString);
+            double ans = factors.get(0).getProbability(queryVarString);
             writer.write((Math.round(ans*100000.0)/100000.0) + "," + NumOfAdditions + "," + NumOfMultiplications);
+            return;
         }
 
 
@@ -90,7 +92,7 @@ public class VariableElimination {
             NumOfAdditions += lastFactor.getTable().size()-1;
         }
 
-        double ans = factors.getFirst().getProbability(queryVarString);
+        double ans = factors.get(0).getProbability(queryVarString);
         writer.write((Math.round(ans*100000.0)/100000.0) + "," + NumOfAdditions + "," + NumOfMultiplications);
 
     }
@@ -102,7 +104,7 @@ public class VariableElimination {
      * @param queryVar the query variable
      * @param evidence the evidence variables
      */
-    public static void addIndependentVars(BayesianNetwork bn, Variable queryVar, HashMap<String, String> evidence,List<Variable> vars ) {
+    public static void removeIndependentVars(BayesianNetwork bn, Variable queryVar, HashMap<String, String> evidence,List<Variable> vars ) {
         ArrayList<Variable> varsToRemove = new ArrayList<>();
         for (Variable v : vars) {
             if (BayesBall.areIndependent(bn, queryVar.getName(), v.getName(), evidence)) {
@@ -175,9 +177,9 @@ public class VariableElimination {
         }
         Factor newFactor = multiplyFactors(toMultiply , hidden);
         if(newFactor != null) {
-            int size = newFactor.getTable().size();
+            int sizeOfOld = newFactor.getTable().size();
             newFactor = newFactor.EliminateVariable(hidden);
-            NumOfAdditions+= (size -newFactor.getTable().size());
+            NumOfAdditions+= (sizeOfOld -newFactor.getTable().size());
         }
         if(newFactor != null && newFactor.getTable().size() > 1) newFactors.add(newFactor);
 
@@ -195,11 +197,11 @@ public class VariableElimination {
     public static Factor multiplyFactors(List<Factor> factors, Variable hidden) {
         if (factors.isEmpty()) return null;
         factors.sort(Comparator.comparingInt(f -> f.getTable().size()));
-        Factor result = factors.getFirst();
+        Factor result = factors.get(0);
 
         while(factors.size() > 1) {
-            Factor f1 = factors.removeFirst();
-            Factor f2 = factors.removeFirst();
+            Factor f1 = factors.remove(0);
+            Factor f2 = factors.remove(0);
             result = f1.join(f2, hidden);
             insert(factors,result);
             NumOfMultiplications += result.getTable().size();

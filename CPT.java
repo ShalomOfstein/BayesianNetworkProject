@@ -93,8 +93,8 @@ public class CPT {
      * @return probability of the variable given the outcomes of its parents
      */
 
-    public double getProbability(String[] parentOutcomes) {
-        Set<String> outcomeSet = new HashSet<String>(Arrays.asList(parentOutcomes));
+    public double getProbability(ArrayList<String> parentOutcomes) {
+        Set<String> outcomeSet = new HashSet<String>(parentOutcomes);
         return table.getOrDefault(outcomeSet, 0.0);
     }
     public Map<List<String>, Double> getTable() {
