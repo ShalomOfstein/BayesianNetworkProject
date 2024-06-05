@@ -250,7 +250,20 @@ public class Factor implements Comparable<Factor>{
             return 1;
         } else if(this.table.size() < f.getTable().size()) {
             return -1;
+        }else{
+            int ASCIISum1 = 0;
+            int ASCIISum2 = 0;
+            for(Variable v : this.variables.values()){
+                for(char c : v.getName().toCharArray()){
+                    ASCIISum1 += (int)c;
+                }
+            }
+            for(Variable v : f.getVariables()){
+                for(char c : v.getName().toCharArray()){
+                    ASCIISum1 += (int)c;
+                }
+            }
+            return Integer.compare(ASCIISum1, ASCIISum2);
         }
-        return 0;
     }
 }

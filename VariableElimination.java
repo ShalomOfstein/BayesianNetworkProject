@@ -219,7 +219,7 @@ public class VariableElimination {
         if (factors.isEmpty()) return null;
 
         // sort the factors by size
-        factors.sort(Comparator.comparingInt(f -> f.getTable().size()));
+        factors.sort(new FactorComperator());
         Factor result = factors.get(0); // by default, the result is the first factor (if the list has only one factor)
 
         // join the factors in pairs
