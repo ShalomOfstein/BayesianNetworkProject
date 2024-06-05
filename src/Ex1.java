@@ -28,8 +28,8 @@ public class Ex1 {
     public static void main(String[] args) {
 
         // Default input and output file names
-        String inputFile = "input.txt";
-        String outputFile = "output.txt";
+        String inputFile = "tests/inputs/input2.txt";
+        String outputFile = "tests/outputs/Actual/outputFile.txt";
 
         // Read the input and output file names from the command line arguments
         if(args.length==1){

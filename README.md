@@ -43,6 +43,7 @@ The project directory is organized as follows:
 * `Ex1Test.java`
 * *inputs*
 * *outputs*
+    * *Actual* (where the output files are generated)
 
 ## How to Use
 ### Prerequisites
