@@ -1,3 +1,5 @@
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -23,7 +25,7 @@ public class VariableElimination {
      * @param bn the Bayesian Network
      * @param query the query
      */
-    public static void processVariableEliminationQuery(BayesianNetwork bn , String query){
+    public static void processVariableEliminationQuery(BayesianNetwork bn , String query, BufferedWriter writer) throws IOException {
         NumOfAdditions = 0;
         NumOfMultiplications = 0;
 
@@ -72,7 +74,7 @@ public class VariableElimination {
 
         if(factors.size()==1){
             double ans = factors.getFirst().getProbability(queryVarString);
-            System.out.println(Math.round(ans*100000.0)/100000.0);
+            writer.write((Math.round(ans*100000.0)/100000.0) + "," + NumOfAdditions + "," + NumOfMultiplications);
         }
 
 
@@ -89,9 +91,7 @@ public class VariableElimination {
         }
 
         double ans = factors.getFirst().getProbability(queryVarString);
-        System.out.println((Math.round(ans*100000.0)/100000.0) + "," + NumOfAdditions + "," + NumOfMultiplications);
-
-
+        writer.write((Math.round(ans*100000.0)/100000.0) + "," + NumOfAdditions + "," + NumOfMultiplications);
 
     }
 
