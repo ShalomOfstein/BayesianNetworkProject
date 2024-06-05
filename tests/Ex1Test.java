@@ -1,4 +1,7 @@
+package tests;
+
 import org.junit.jupiter.api.Test;
+import src.Ex1;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

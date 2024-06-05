@@ -1,3 +1,5 @@
+package src;
+
 import java.io.*;
 //TODO: account for damaged tests.inputs and bad networks
 
