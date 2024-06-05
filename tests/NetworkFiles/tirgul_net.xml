@@ -1,0 +1,79 @@
+<NETWORK>
+    <VARIABLE>
+        <NAME>1</NAME>
+        <OUTCOME>T</OUTCOME>
+        <OUTCOME>F</OUTCOME>
+    </VARIABLE>
+
+    <VARIABLE>
+        <NAME>2</NAME>
+        <OUTCOME>T</OUTCOME>
+        <OUTCOME>F</OUTCOME>
+    </VARIABLE>
+
+    <VARIABLE>
+        <NAME>3</NAME>
+        <OUTCOME>T</OUTCOME>
+        <OUTCOME>F</OUTCOME>
+    </VARIABLE>
+
+    <VARIABLE>
+        <NAME>4</NAME>
+        <OUTCOME>T</OUTCOME>
+        <OUTCOME>F</OUTCOME>
+    </VARIABLE>
+
+    <VARIABLE>
+        <NAME>5</NAME>
+        <OUTCOME>T</OUTCOME>
+        <OUTCOME>F</OUTCOME>
+    </VARIABLE>
+
+    <VARIABLE>
+        <NAME>6</NAME>
+        <OUTCOME>T</OUTCOME>
+        <OUTCOME>F</OUTCOME>
+    </VARIABLE>
+
+
+    <VARIABLE>
+        <NAME>7</NAME>
+        <OUTCOME>T</OUTCOME>
+        <OUTCOME>F</OUTCOME>
+    </VARIABLE>
+
+    <VARIABLE>
+        <NAME>8</NAME>
+        <OUTCOME>T</OUTCOME>
+        <OUTCOME>F</OUTCOME>
+    </VARIABLE>
+
+
+    <DEFINITION>
+        <FOR>3</FOR>
+        <GIVEN>1</GIVEN>
+    </DEFINITION>
+
+    <DEFINITION>
+        <FOR>5</FOR>
+        <GIVEN>3</GIVEN>
+    </DEFINITION>
+
+    <DEFINITION>
+        <FOR>4</FOR>
+        <GIVEN>3</GIVEN>
+        <GIVEN>2</GIVEN>
+    </DEFINITION>
+
+    <DEFINITION>
+        <FOR>7</FOR>
+        <GIVEN>6</GIVEN>
+        <GIVEN>4</GIVEN>
+    </DEFINITION>
+
+    <DEFINITION>
+        <FOR>8</FOR>
+        <GIVEN>7</GIVEN>
+    </DEFINITION>
+
+</NETWORK>

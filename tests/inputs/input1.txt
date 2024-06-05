@@ -1,0 +1,11 @@
+tests/NetworkFiles/blueNet.xml
+E-A|D=0
+E-B|D=0
+E-C|D=0
+E-D|D=0
+P(A=0|) B-C-D-E-F
+P(F=0|A=0,B=0,C=0,D=0,E=0)
+P(F=0|D=0,E=0) A-B-C
+P(E=1|D=0) A-B-C
+P(E=0|B=1) C
+P(F=1|A=0,B=1,D=1) C-E

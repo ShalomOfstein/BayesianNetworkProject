@@ -1,0 +1,7 @@
+tests/NetworkFiles/alarm_net.xml
+B-J|
+J-B|A=F
+
+E-M|A=T
+B-E|
+B-E|J=T

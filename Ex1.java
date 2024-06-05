@@ -1,5 +1,5 @@
 import java.io.*;
-//TODO: account for damaged inputs and bad networks
+//TODO: account for damaged tests.inputs and bad networks
 
 /**
  * This is the Main file for running the Bayesian Network queries.
@@ -60,12 +60,11 @@ public class Ex1 {
             }
             // Second line: query the Bayesian Network
             while ((line = br.readLine()) != null) {
-                // enter a new line for each query
-                if(lineNumber>0) writer.newLine();
-
                 line = line.trim();
                 if (line.isEmpty()) continue;
+                // enter a new line for each query
 
+                if(lineNumber>0) writer.newLine();
                 // Process the query
                 if (line.startsWith("P(")) {
                     VariableElimination.processVariableEliminationQuery(bn, line, writer);

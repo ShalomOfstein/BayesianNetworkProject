@@ -1,0 +1,7 @@
+tests/NetworkFiles/tirgul_net.xml
+2-6|
+1-2|8=T
+1-2|4=T
+1-5|4=T
+5-6|3=T,1=T
+5-6|8=T,1=T

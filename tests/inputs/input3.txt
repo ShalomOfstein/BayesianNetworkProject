@@ -1,0 +1,6 @@
+tests/NetworkFiles/BallNet.xml
+L-T'|T=0
+L-B|
+L-B|T=0
+L-B|T'=0
+L-B|T=0,R=0

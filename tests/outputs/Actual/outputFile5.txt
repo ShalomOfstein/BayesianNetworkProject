@@ -1,0 +1,10 @@
+no
+no
+yes
+no
+yes
+no
+yes
+no
+no
+0.64516,7,14

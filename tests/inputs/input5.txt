@@ -1,0 +1,11 @@
+tests/NetworkFiles/tirgul2_net.xml
+A-D|
+A-D|B=T
+A-D|B=T,C=T
+B-C|
+B-C|A=T
+C-B|
+C-B|A=T
+B-C|D=T
+C-B|D=T
+P(A=T|D=T) B-C

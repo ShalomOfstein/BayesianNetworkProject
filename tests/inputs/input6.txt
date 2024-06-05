@@ -1,0 +1,6 @@
+tests/NetworkFiles/tirgul3_net.xml
+A-F|
+A-F|B=T
+P(E=1|D=0) A-B-C-F
+P(E=0|B=1) A-C-D-F
+P(F=1|A=0,B=1,D=1) C-E
