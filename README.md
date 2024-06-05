@@ -69,7 +69,7 @@ To run the project with your own BN, you need the following:
         <FOR>A</FOR>
         <GIVEN>E</GIVEN>
         <GIVEN>B</GIVEN>
-        <TABLE>0.95 0.05 0.29 0.71 0.94 0.06</TABLE>
+        <TABLE>0.95 0.05 0.29 0.71 0.94 0.06 0.001 0.999</TABLE>
     </DEFINITION>
 </NETWORK>
 ``` 
