@@ -1,0 +1,2 @@
+tests/NetworkFiles/net7.xml
+P(G=one|B=T,I=ken) H-E-A-C-D-F

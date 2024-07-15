@@ -1,0 +1,2 @@
+tests/NetworkFiles/net8.xml
+P(A=T|C=T,F=T,E=F) D-B-G

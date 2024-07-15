@@ -1,0 +1,2 @@
+tests/NetworkFiles/net9.xml
+P(S=T|W=T) R-C

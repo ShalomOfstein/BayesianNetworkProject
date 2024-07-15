@@ -1,0 +1,2 @@
+tests/NetworkFiles/net7.xml
+P(D=T|E=one) H-I-A-C-G-F-B

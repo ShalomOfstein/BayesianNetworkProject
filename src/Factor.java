@@ -268,4 +268,18 @@ public class Factor implements Comparable<Factor>{
             return Integer.compare(ASCIISum1, ASCIISum2);
         }
     }
+    /**
+     * To String
+     */
+     public String toString() {
+         String s = "Variables: ";
+         for (Variable v : variables.values()) {
+             s += v.getName() + ", ";
+         }
+         s += "\n Table: \n";
+         for (Set<String> key : table.keySet()) {
+             s += key + " : " + table.get(key) + "\n";
+         }
+         return s;
+     }
 }

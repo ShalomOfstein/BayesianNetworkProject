@@ -76,7 +76,7 @@ public class VariableElimination {
         // if there is only one factor, return the probability of the query variable
         // no need to multiply or sum
         if(factors.size()==1){
-            double ans = factors.get(0).getProbability(queryVarString);
+            float ans = (float) factors.get(0).getProbability(queryVarString);
             writer.write((Math.round(ans*100000.0)/100000.0) + "," + NumOfAdditions + "," + NumOfMultiplications);
             return;
         }
@@ -231,9 +231,11 @@ public class VariableElimination {
             result = f1.join(f2, hidden);
             insert(factors,result); // insert the new factor in the list of factors according to its size
             NumOfMultiplications += result.getTable().size(); // set the number of multiplications
+
         }
         return result;
     }
+
 
     /**
      * This method inserts a factor into a list of factors according to its size
@@ -246,11 +248,12 @@ public class VariableElimination {
             return;
         }
         for(int i = 0; i < factors.size(); i++) {
-            if(factors.get(i).getTable().size() > f.getTable().size()) {
+            if(factors.get(i).getTable().size() >= f.getTable().size()) {
                 factors.add(i,f);
                 return;
             }
         }
+        factors.add(factors.size()-1,f);
     }
 
 

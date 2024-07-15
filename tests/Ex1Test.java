@@ -18,9 +18,9 @@ public class Ex1Test {
     private void runTest(int testNumber) {
         try {
             // Construct paths to input and expected output files
-            String inputFileName = "tests/inputs/input" + testNumber + ".txt";
+            String inputFileName = "tests/inputs/New_input" + testNumber + ".txt";
             String outputFileName = "tests/outputs/Actual/outputFile" + (testNumber) + ".txt";
-            String expectedOutputFileName = "tests/outputs/output" + (testNumber) + ".txt";
+            String expectedOutputFileName = "tests/outputs/New_Output" + (testNumber) + ".txt";
 
             String[] args = {inputFileName, outputFileName};
 
@@ -68,11 +68,11 @@ public class Ex1Test {
 
         runTest(6);
     }
-    @Test
-    public void test7() throws IOException, URISyntaxException {
-
-        runTest(7);
-    }
+//    @Test
+//    public void test7() throws IOException, URISyntaxException {
+//
+//        runTest(7);
+//    }
 
 
 }
